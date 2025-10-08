@@ -3,47 +3,25 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         TabView {
-            Page1()
+            DiscoverPage()
                 .tabItem {
-                    Label("Home", systemImage: "house.fill")
+                    Label("Discover", systemImage: "sparkles")
                 }
             
-            Page2()
+            CreatePage()
                 .tabItem {
-                    Label("Search", systemImage: "magnifyingglass")
+                    Label("Create", systemImage: "plus.circle")
                 }
             
-            Page3()
+            MapPage()
                 .tabItem {
-                    Label("Settings", systemImage: "gear")
+                    Label("Map", systemImage: "map")
                 }
-        }
-    }
-}
-
-struct Page1: View {
-    var body: some View {
-        VStack {
-            Text("Home Page")
-                .font(.largeTitle)
-        }
-    }
-}
-
-struct Page2: View {
-    var body: some View {
-        VStack {
-            Text("Search Page")
-                .font(.largeTitle)
-        }
-    }
-}
-
-struct Page3: View {
-    var body: some View {
-        VStack {
-            Text("Settings Page")
-                .font(.largeTitle)
+            
+            ProfilePage()
+                .tabItem {
+                    Label("Profile", systemImage: "person.circle")
+                }
         }
     }
 }
