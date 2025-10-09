@@ -18,6 +18,8 @@ struct DiscoverPage: View {
                 
                 NearbySection(spots: Array(sampleSpots.prefix(4)))
                 
+                PopularSection(spots: Array(sampleSpots.suffix(3)))
+                
             }
             .padding(.vertical, 20)
         }
@@ -316,6 +318,111 @@ struct NearbySpotCard: View {
             )
         }
         .frame(width: 150)
+    }
+}
+struct PopularSection: View {
+    let spots: [SkateSpot]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("POPULAR THIS WEEK")
+                    .font(.system(size: 14, weight: .black, design: .default))
+                    .tracking(2)
+                    .foregroundColor(Color(hex: "3F4B3B"))
+                Spacer()
+                Button("VIEW ALL →") {}
+                    .font(.system(size: 11, weight: .heavy))
+                    .foregroundColor(Color(hex: "5A9367"))
+            }
+            .padding(.horizontal)
+            
+            VStack(spacing: 10) {
+                ForEach(spots) { spot in
+                    PopularSpotRow(spot: spot)
+                        .padding(.horizontal)
+                }
+            }
+        }
+    }
+}
+
+struct PopularSpotRow: View {
+    let spot: SkateSpot
+    
+    var body: some View {
+        HStack(spacing: 0) {
+            // Ledge block
+            ZStack {
+                Rectangle()
+                    .fill(Color(hex: "5CAB7D"))
+                    .frame(width: 65, height: 65)
+                
+                // Top ledge surface
+                Rectangle()
+                    .fill(Color(hex: "44633F"))
+                    .frame(width: 65, height: 8)
+                    .offset(y: -28.5)
+                
+                Image(systemName: spot.category.icon)
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundColor(Color(hex: "3F4B3B"))
+            }
+            .overlay(
+                Rectangle()
+                    .stroke(Color(hex: "3F4B3B"), lineWidth: 2)
+            )
+            
+            VStack(alignment: .leading, spacing: 6) {
+                Text(spot.name.uppercased())
+                    .font(.system(size: 12, weight: .black))
+                    .tracking(0.5)
+                    .foregroundColor(Color(hex: "3F4B3B"))
+                
+                HStack(spacing: 10) {
+                    HStack(spacing: 4) {
+                        Image(systemName: "star.fill")
+                            .font(.system(size: 9))
+                            .foregroundColor(Color(hex: "5A9367"))
+                        Text(String(format: "%.1f", spot.rating))
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(Color(hex: "44633F"))
+                    }
+                    
+                    Rectangle()
+                        .fill(Color(hex: "44633F"))
+                        .frame(width: 1.5, height: 10)
+                    
+                    HStack(spacing: 4) {
+                        Image(systemName: "location.fill")
+                            .font(.system(size: 9))
+                        Text(spot.distance)
+                            .font(.system(size: 10, weight: .bold))
+                    }
+                    .foregroundColor(Color(hex: "44633F"))
+                }
+                
+                Text("\(spot.reviews) REVIEWS")
+                    .font(.system(size: 8, weight: .black))
+                    .tracking(0.5)
+                    .foregroundColor(Color(hex: "5A9367"))
+            }
+            .padding(.horizontal, 12)
+            
+            Spacer()
+            
+            // Arrow
+            Image(systemName: "chevron.right")
+                .font(.system(size: 12, weight: .bold))
+                .foregroundColor(Color(hex: "44633F"))
+                .padding(.trailing, 12)
+        }
+        .frame(height: 65)
+        .background(Color.white)
+        .overlay(
+            Rectangle()
+                .stroke(Color(hex: "3F4B3B"), lineWidth: 2)
+        )
     }
 }
 
