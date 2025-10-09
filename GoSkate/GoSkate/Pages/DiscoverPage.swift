@@ -14,6 +14,8 @@ struct DiscoverPage: View {
                 
                 CategoryFilter(selectedCategory: $selectedCategory)
                 
+                FeaturedSection(spot: sampleSpots[0])
+                
                 
             }
             .padding(.vertical, 20)
@@ -102,6 +104,120 @@ struct CategoryButton: View {
     }
 }
 
+struct FeaturedSection: View {
+    let spot: SkateSpot
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("FEATURED")
+                .font(.system(size: 14, weight: .black, design: .default))
+                .tracking(2)
+                .foregroundColor(Color(hex: "3F4B3B"))
+                .padding(.horizontal)
+            
+            FeaturedSpotCard(spot: spot)
+                .padding(.horizontal)
+        }
+    }
+}
+
+struct FeaturedSpotCard: View {
+    let spot: SkateSpot
+    
+    var body: some View {
+        ZStack(alignment: .bottomLeading) {
+            // Ramp shape background
+            Rectangle()
+                .fill(
+                    LinearGradient(
+                        colors: [
+                            Color(hex: "44633F"),
+                            Color(hex: "5A9367")
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                )
+                .frame(height: 200)
+                .overlay(
+                    // Ramp lines
+                    VStack(spacing: 0) {
+                        Spacer()
+                        Rectangle()
+                            .fill(Color(hex: "3F4B3B").opacity(0.3))
+                            .frame(height: 2)
+                        Spacer()
+                        Rectangle()
+                            .fill(Color(hex: "3F4B3B").opacity(0.3))
+                            .frame(height: 2)
+                        Spacer()
+                    }
+                )
+            
+            // Angled cut at top right (coping)
+            Path { path in
+                path.move(to: CGPoint(x: UIScreen.main.bounds.width - 100, y: 0))
+                path.addLine(to: CGPoint(x: UIScreen.main.bounds.width , y: 0))
+                path.addLine(to: CGPoint(x: UIScreen.main.bounds.width, y: 40))
+            }
+            .fill(Color(hex: "3F4B3B"))
+            
+            // Content
+            VStack(alignment: .leading, spacing: 10) {
+                HStack {
+                    Image(systemName: spot.category.icon)
+                        .font(.system(size: 11, weight: .bold))
+                    Text(spot.category.rawValue.uppercased())
+                        .font(.system(size: 10, weight: .black))
+                        .tracking(1)
+                }
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                .background(Color(hex: "5CAB7D"))
+                .foregroundColor(Color(hex: "3F4B3B"))
+                .overlay(
+                    Rectangle()
+                        .stroke(Color(hex: "3F4B3B"), lineWidth: 1.5)
+                )
+                
+                Spacer()
+                
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(spot.name.uppercased())
+                        .font(.system(size: 22, weight: .black, design: .default))
+                        .tracking(1)
+                    
+                    HStack(spacing: 16) {
+                        HStack(spacing: 4) {
+                            Image(systemName: "star.fill")
+                                .font(.system(size: 11))
+                            Text(String(format: "%.1f", spot.rating))
+                                .font(.system(size: 13, weight: .bold))
+                        }
+                        
+                        Rectangle()
+                            .fill(Color(hex: "5CAB7D"))
+                            .frame(width: 2, height: 12)
+                        
+                        HStack(spacing: 4) {
+                            Image(systemName: "location.fill")
+                                .font(.system(size: 11))
+                            Text(spot.distance)
+                                .font(.system(size: 13, weight: .bold))
+                        }
+                    }
+                    .foregroundColor(Color(hex: "5CAB7D"))
+                }
+            }
+            .foregroundColor(.white)
+            .padding(16)
+        }
+        .overlay(
+            Rectangle()
+                .stroke(Color(hex: "3F4B3B"), lineWidth: 3)
+        )
+    }
+}
 
 
 // Custom Shapes
