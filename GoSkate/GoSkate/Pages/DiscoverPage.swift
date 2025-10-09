@@ -16,6 +16,7 @@ struct DiscoverPage: View {
                 
                 FeaturedSection(spot: sampleSpots[0])
                 
+                NearbySection(spots: Array(sampleSpots.prefix(4)))
                 
             }
             .padding(.vertical, 20)
@@ -219,6 +220,104 @@ struct FeaturedSpotCard: View {
     }
 }
 
+struct NearbySection: View {
+    let spots: [SkateSpot]
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            HStack {
+                Text("NEARBY")
+                    .font(.system(size: 14, weight: .black, design: .default))
+                    .tracking(2)
+                    .foregroundColor(Color(hex: "3F4B3B"))
+                Spacer()
+                Button("VIEW ALL →") {}
+                    .font(.system(size: 11, weight: .heavy))
+                    .foregroundColor(Color(hex: "5A9367"))
+            }
+            .padding(.horizontal)
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    ForEach(spots) { spot in
+                        NearbySpotCard(spot: spot)
+                    }
+                }
+                .padding(.horizontal)
+            }
+        }
+    }
+}
+
+struct NearbySpotCard: View {
+    let spot: SkateSpot
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            // Stair step design
+            ZStack(alignment: .topLeading) {
+                Rectangle()
+                    .fill(Color(hex: "5A9367"))
+                    .frame(width: 150, height: 100)
+                
+                // Step effect
+                VStack(spacing: 0) {
+                    HStack(spacing: 0) {
+                        Spacer()
+                        Rectangle()
+                            .fill(Color(hex: "44633F"))
+                            .frame(width: 50, height: 25)
+                    }
+                    HStack(spacing: 0) {
+                        Spacer()
+                        Rectangle()
+                            .fill(Color(hex: "3F4B3B"))
+                            .frame(width: 25, height: 25)
+                    }
+                }
+                
+                Image(systemName: spot.category.icon)
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundColor(.white.opacity(0.9))
+                    .padding(12)
+            }
+            .overlay(
+                Rectangle()
+                    .stroke(Color(hex: "3F4B3B"), lineWidth: 2)
+            )
+            
+            VStack(alignment: .leading, spacing: 6) {
+                Text(spot.name.uppercased())
+                    .font(.system(size: 11, weight: .black))
+                    .tracking(0.5)
+                    .lineLimit(2)
+                    .foregroundColor(Color(hex: "3F4B3B"))
+                
+                HStack(spacing: 6) {
+                    Image(systemName: "star.fill")
+                        .font(.system(size: 9))
+                        .foregroundColor(Color(hex: "5A9367"))
+                    Text(String(format: "%.1f", spot.rating))
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(Color(hex: "44633F"))
+                    
+                    Spacer()
+                    
+                    Text(spot.distance)
+                        .font(.system(size: 9, weight: .bold))
+                        .foregroundColor(Color(hex: "5A9367"))
+                }
+            }
+            .padding(10)
+            .background(Color.white)
+            .overlay(
+                Rectangle()
+                    .stroke(Color(hex: "3F4B3B"), lineWidth: 2)
+            )
+        }
+        .frame(width: 150)
+    }
+}
 
 // Custom Shapes
 struct Parallelogram: Shape {
